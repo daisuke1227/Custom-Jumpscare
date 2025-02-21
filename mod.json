@@ -13,12 +13,12 @@
 	"description": "This mod totally won't jumpscare you.",
 	
 	"resources": {
-		"sprites": ["resources/*.png"]
+		"sprites": ["Resources/*.png"]
 	},
 	
 	"links": {
 		"community": "https://discord.gg/x3VMjKatQj",
-		"source": ""
+		"source": "https://github.com/JohnnyCena123/My-new-mod/tree/v0.1.0"
 	},
 
 	"tags": [
