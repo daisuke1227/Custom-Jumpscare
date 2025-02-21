@@ -1,0 +1,16 @@
+﻿{
+  "configurations": [
+    {
+      "name": "default",
+      "generator": "Ninja",
+      "configurationType": "RelWithDebInfo",
+      "toolset": "msvc_x86",
+      "inheritEnvironments": [ "msvc_x64" ],
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": ""
+    }
+  ]
+}
