@@ -1,0 +1,98 @@
+{
+	"geode": "4.2.0",
+	"gd": {
+		"win": "2.2074",
+		"android": "2.2074",
+		"mac": "2.2074",
+		"ios": "2.2074"
+	},
+	"id": "johnny_cena.my_new_mod",
+	"name": "My new mod",
+	"version": "v1.0.0",
+	"developer": "Johnny Cena",
+	"description": "This mod totally won't jumpscare you.",
+	
+	"resources": {
+		"sprites": ["resources/*.png"]
+	},
+	
+	"links": {
+		"community": "https://discord.gg/x3VMjKatQj",
+		"source": ""
+	},
+
+	"tags": [
+		"joke"
+	],
+
+	"settings": {
+		"Image": {
+			"name": "Jumpscare image",
+			"type": "file",
+			"default": "johnny_cena.my_new_mod/jumpscare_image.png",
+			"control": {
+				"dialog": "open",
+				"filters": [
+					{
+						"files": [ "*.png"],
+						"description": "Image files"
+					}
+				]
+			}
+		},
+		"Title": {
+			"type": "title",
+			"name": "On death"
+		},
+		"EnableJumpscareOnDeath": {
+			"name": "Enable jumpscare",
+			"type": "bool",
+			"default": true
+		},
+		"ChanceOnDeath": {
+			"name": "Chance of jumpscare",
+			"description": "Set the chance that the jumpscare occurs on death.",
+			"enable-if": "EnableJumpscareOnDeath",
+			"type": "float",
+			"default": 0,
+			"min": 0,
+			"max": 100,
+			"control": {
+				"slider": true,
+				"slider-step": 0.1,
+				"arrows": true,
+				"arrow-step": 1,
+				"big-arrows": true,
+				"big-arrow-step": 5,
+				"input": true
+			}
+		},
+		"Title": {
+			"type": "title",
+			"name": "On level exit"
+		},
+		"EnableJumpscareOnLevelExit": {
+			"name": "Enable jumpscare",
+			"type": "bool",
+			"default": true
+		},
+		"ChanceOnLevelExit": {
+			"name": "Chance of jumpscare",
+			"description": "Set the chance that the jumpscare occurs on Level Exit.",
+			"enable-if": "EnableJumpscareOnLevelExit",
+			"type": "float",
+			"default": 0,
+			"min": 0,
+			"max": 100,
+			"control": {
+				"slider": true,
+				"slider-step": 0.1,
+				"arrows": true,
+				"arrow-step": 1,
+				"big-arrows": true,
+				"big-arrow-step": 5,
+				"input": true
+			}
+		}
+	}
+}
