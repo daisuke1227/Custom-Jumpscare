@@ -134,7 +134,7 @@ class $modify(MyPauseLayer, PauseLayer) {
 
 };
 
-#include <Geode/Modify/CCDirector.hpp>
+#include <Geode/modify/CCDirector.hpp>
 class $modify(MyCCDirector, CCDirector) {
 
 	void willSwitchToScene(CCScene* pScene) {
