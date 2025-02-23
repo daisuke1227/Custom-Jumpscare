@@ -2,12 +2,11 @@
 	"geode": "4.2.0",
 	"gd": {
 		"win": "2.2074",
-		"android": "2.2074",
-		"mac": "2.2074",
-		"ios": "2.2074"
+		"android": "0.0",
+		"mac": "0.0"
 	},
-	"id": "johnny_cena.my_new_mod",
-	"name": "My new mod",
+	"id": "johnny_cena.custom_jumpscare",
+	"name": "Custom jumpscare",
 	"version": "v1.0.0",
 	"developer": "Johnny Cena",
 	"description": "This mod totally won't jumpscare you.",
@@ -18,7 +17,7 @@
 	
 	"links": {
 		"community": "https://discord.gg/x3VMjKatQj",
-		"source": "https://github.com/JohnnyCena123/My-new-mod/tree/v0.1.0"
+		"source": "https://github.com/JohnnyCena123/My-new-mod/"
 	},
 
 	"tags": [
@@ -26,33 +25,54 @@
 	],
 
 	"settings": {
+		"EnableMod": {
+			"name": "Enable mod",
+			"type": "bool",
+			"default": true
+		},
 		"Image": {
 			"name": "Jumpscare image",
 			"type": "file",
-			"default": "johnny_cena.my_new_mod/jumpscare_image.png",
+			"default": "jumpscare_image.png",
 			"control": {
 				"dialog": "open",
 				"filters": [
 					{
-						"files": [ "*.png"],
+						"files": [ "*.png", "*.jpeg"],
 						"description": "Image files"
 					}
 				]
 			}
 		},
-		"Title": {
+		"EnableLogging":{
+			"name": "Enable logging",
+			"description": "Ignore this if you're not a developer",
+			"type": "bool",
+			"default": false,
+			"enable-if": "EnableMod",
+			"enable-if-description": "The mod is disabled"
+		},
+		"TestJumpscare": {
+			"name": "Test jumpscare",
+			"type": "custom:test-jumpscare",
+			"enable-if": "EnableMod",
+			"enable-if-description": "The mod is disabled"
+		},
+		"OnDeath": {
 			"type": "title",
 			"name": "On death"
 		},
 		"EnableJumpscareOnDeath": {
-			"name": "Enable jumpscare",
+			"name": "Enable",
 			"type": "bool",
-			"default": true
+			"default": true,
+			"enable-if": "EnableMod",
+			"enable-if-description": "The mod is disabled"
 		},
 		"ChanceOnDeath": {
-			"name": "Chance of jumpscare",
+			"name": "Chance",
 			"description": "Set the chance that the jumpscare occurs on death.",
-			"enable-if": "EnableJumpscareOnDeath",
+			"enable-if": "EnableJumpscareOnDeath && EnableMod",
 			"type": "float",
 			"default": 0,
 			"min": 0,
@@ -67,19 +87,50 @@
 				"input": true
 			}
 		},
-		"Title": {
+		"OnLevelExit": {
 			"type": "title",
 			"name": "On level exit"
 		},
 		"EnableJumpscareOnLevelExit": {
-			"name": "Enable jumpscare",
+			"name": "Enable",
 			"type": "bool",
-			"default": true
+			"default": true,
+			"enable-if": "EnableMod",
+			"enable-if-description": "The mod is disabled"
 		},
 		"ChanceOnLevelExit": {
-			"name": "Chance of jumpscare",
-			"description": "Set the chance that the jumpscare occurs on Level Exit.",
-			"enable-if": "EnableJumpscareOnLevelExit",
+			"name": "Chance",
+			"description": "Set the chance that the jumpscare occurs on level exit.",
+			"enable-if": "EnableJumpscareOnLevelExit && EnableMod",
+			"type": "float",
+			"default": 0,
+			"min": 0,
+			"max": 100,
+			"control": {
+				"slider": true,
+				"slider-step": 0.1,
+				"arrows": true,
+				"arrow-step": 1,
+				"big-arrows": true,
+				"big-arrow-step": 5,
+				"input": true
+			}
+		},
+		"OnSceneTransition": {
+			"type": "title",
+			"name": "On scene transition"
+		},
+		"EnableJumpscareOnSceneTransition": {
+			"name": "Enable",
+			"type": "bool",
+			"default": true,
+			"enable-if": "EnableMod",
+			"enable-if-description": "The mod is disabled"
+		},
+		"ChanceOnSceneTransition": {
+			"name": "Chance",
+			"description": "Set the chance that the jumpscare occurs on scene transition.",
+			"enable-if": "EnableJumpscareOnSceneTransition && EnableMod",
 			"type": "float",
 			"default": 0,
 			"min": 0,
