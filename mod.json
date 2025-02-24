@@ -41,6 +41,8 @@
 		"Image": {
 			"name": "Jumpscare image",
 			"type": "file",
+			"enable-if": "EnableMod",
+			"enable-if-description": "The mod is disabled",
 			"default": "johnny_cena.custom_jumpscare/jumpscare_image.png",
 			"control": {
 				"dialog": "open",
@@ -54,7 +56,7 @@
 		},
 		"FadeIn": {
 			"name": "Fade-in time",
-			"description": "Fade-in time for the image during jumpscares in seconds",
+			"description": "Fade-in time for the image during jumpscares",
 			"type": "float",
 			"default": 0.05,
 			"min": 0,
@@ -90,8 +92,8 @@
 			"enable-if-description": "The mod is disabled"
 		},
 		"FadeOut": {
-			"name": "Fade-out time for jumpscares",
-			"description": "Fade-out time for the image during jumpscares in seconds",
+			"name": "Fade-out time",
+			"description": "Fade-out time for the image during jumpscares",
 			"type": "float",
 			"default": 1,
 			"min": 0,

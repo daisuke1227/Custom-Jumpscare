@@ -6,9 +6,10 @@ using namespace geode::prelude;
 bool EnableMod;
 bool EnableLogging;
 
-int PerformJumpscare(std::string Occasion, std::string Occasion2) { // it didnt work without taking another parameter :(
+
+int PerformJumpscare(std::string Occasion, std::string Occasion2, bool IsTest) { // it didnt work without taking another parameter :(
 	auto ImagePath = Mod::get()->getSettingValue<std::filesystem::path>("Image").string().c_str();
-	if (EnableLogging) log::debug("The path for the image is: ", ImagePath);
+	if (EnableLogging) log::debug("The path for the image is: {}", ImagePath);
 	auto Image = CCSprite::create(ImagePath);
 
 
@@ -34,7 +35,7 @@ int PerformJumpscare(std::string Occasion, std::string Occasion2) { // it didnt 
 		Image->setPosition( ccp(WindowSize.width/2, WindowSize.height/2) );
 
 		auto Actions = CCArray::create();
-		Actions->addObject(CCFadeTo::create(Mod::get()->getSettingValue<double>("FadeIn"), Mod::get()->getSettingValue<double>("FadeIn") * 255));
+		Actions->addObject(CCFadeTo::create(Mod::get()->getSettingValue<double>("FadeIn"), Mod::get()->getSettingValue<double>("MaxOpacity") * 255));
 		Actions->addObject(CCFadeTo::create(Mod::get()->getSettingValue<double>("FadeOut"), 0));
 		Actions->addObject(CallFuncExt::create([Scene, Image]{
 			Scene->removeChild(Image);
@@ -45,7 +46,12 @@ int PerformJumpscare(std::string Occasion, std::string Occasion2) { // it didnt 
 
     	auto RandN = rand() / (RAND_MAX + 1.0);
 
-    	if (RandN < Mod::get()->getSettingValue<double>("ChanceOn" + Occasion2) && Mod::get()->getSettingValue<bool>("EnableJumpscareOn" + Occasion2)) {
+		if (IsTest) {
+			Image->runAction(CCSequence::create(Actions));
+	    	if (EnableLogging) log::debug("Jumpscare on {} was performed.", Occasion);
+			return 2;
+		} 
+		else if ((RandN < Mod::get()->getSettingValue<double>("ChanceOn" + Occasion2) && Mod::get()->getSettingValue<bool>("EnableJumpscareOn" + Occasion2)) ) {
 	    	Image->runAction(CCSequence::create(Actions));
 	    	if (EnableLogging) log::debug("Jumpscare on {} was performed.", Occasion);
 			return 2;
@@ -55,48 +61,7 @@ int PerformJumpscare(std::string Occasion, std::string Occasion2) { // it didnt 
    		}
 	}
 }
-
-int PerformJumpscare(std::string Occasion) {
-	auto ImagePath = Mod::get()->getSettingValue<std::filesystem::path>("Image").string().c_str();
-	if (EnableLogging) log::debug("The path for the image is: ", ImagePath);
-	auto Image = CCSprite::create(ImagePath);
-
-	if (Image == nullptr) {
-		if (EnableLogging) log::debug("Jumpscare on {} failed - invalid image.", Occasion);
-		return 0;
-	} else if(!Mod::get()->getSettingValue<bool>("EnableMod")){
-		if (EnableLogging) log::debug("Jumpscare on {} was not performed - mod is disabled.", Occasion);
-		return 1;
-    } else {
 	
-		Image->setID("Jumpscare-Image");
-
-    	auto Scene = CCScene::get();
-    	Scene->addChild(Image);
-
-    	Image->setOpacity(0);
-		Image->setZOrder(Scene->getHighestChildZ() + 1000);
-	
-		auto WindowSize = CCDirector::sharedDirector()->getWinSize();
-		Image->setPosition( ccp(WindowSize.width/2, WindowSize.height/2) );
-
-		auto Actions = CCArray::create();
-		Actions->addObject(CCFadeTo::create(0.05, 255));
-		Actions->addObject(CCFadeTo::create(0.5, 0));
-		Actions->addObject(CallFuncExt::create([Scene, Image]{
-			Scene->removeChild(Image);
-		}));
-
-		auto ImageSize = Image->getContentSize();
-		Image->setScale(WindowSize.height / ImageSize.height);
-
-    	auto RandN = rand() / (RAND_MAX + 1.0);
-
-	    Image->runAction(CCSequence::create(Actions));
-	    if (EnableLogging) log::debug("Jumpscare on {} was performed.", Occasion);
-		return 2;
-	}
-}
 
 bool HasGameStarted = false;
 
@@ -140,7 +105,7 @@ class $modify(MyPlayLayer, PlayLayer) {
 		PlayLayer::destroyPlayer(Player, Object);	
 
 		if(Object != m_anticheatSpike) {
-			PerformJumpscare("death", "Death");
+			PerformJumpscare("death", "Death", false);
 		}
 
 	}
@@ -154,7 +119,7 @@ class $modify(MyPauseLayer, PauseLayer) {
 
 		PauseLayer::onQuit(Sender);
 
-		PerformJumpscare("level exit", "LevelExit");
+		PerformJumpscare("level exit", "LevelExit", false);
 	}
 
 };
@@ -164,7 +129,7 @@ class $modify(MyCCDirector, CCDirector) {
 
 	void willSwitchToScene(CCScene* pScene) {
 
-		PerformJumpscare("scene transition", "SceneTransition");
+		PerformJumpscare("scene transition", "SceneTransition", false);
 
 	}
 
