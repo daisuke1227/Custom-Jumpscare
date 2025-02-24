@@ -1,22 +1,72 @@
 
 #include <Geode/Geode.hpp>
 
-
-
-
 using namespace geode::prelude;
 
+bool EnableMod;
 bool EnableLogging;
 
-bool PerformJumpscare(std::filesystem::path ImagePath, float Chance, bool CheckJumpscare, std::string Occasion) {
-	auto Image = CCSprite::create(ImagePath.string().c_str());
+int PerformJumpscare(std::string Occasion, std::string Occasion2) { // it didnt work without taking another parameter :(
+	auto ImagePath = Mod::get()->getSettingValue<std::filesystem::path>("Image").string().c_str();
+	if (EnableLogging) log::debug("The path for the image is: ", ImagePath);
+	auto Image = CCSprite::create(ImagePath);
+
+
+	if (EnableLogging) log::debug("\"Occasion\" is: {} \"Occasion2\" is: {}", Occasion, Occasion2);
 
 	if (Image == nullptr) {
 		if (EnableLogging) log::debug("Jumpscare on {} failed - invalid image.", Occasion);
-		return false;
+		return 0;
 	} else if(!Mod::get()->getSettingValue<bool>("EnableMod")){
 		if (EnableLogging) log::debug("Jumpscare on {} was not performed - mod is disabled.", Occasion);
-		return true;
+		return 1;
+    } else {
+	
+		Image->setID("Jumpscare-Image");
+
+    	auto Scene = CCScene::get();
+    	Scene->addChild(Image);
+
+    	Image->setOpacity(0);
+		Image->setZOrder(Scene->getHighestChildZ() + 1000);
+	
+		auto WindowSize = CCDirector::sharedDirector()->getWinSize();
+		Image->setPosition( ccp(WindowSize.width/2, WindowSize.height/2) );
+
+		auto Actions = CCArray::create();
+		Actions->addObject(CCFadeTo::create(Mod::get()->getSettingValue<double>("FadeIn"), Mod::get()->getSettingValue<double>("MaxOpacity") * 255));
+		Actions->addObject(CCFadeTo::create(Mod::get()->getSettingValue<double>("FadeOut"), 0));
+		Actions->addObject(CallFuncExt::create([Scene, Image]{
+			Scene->removeChild(Image);
+		}));
+
+		auto ImageSize = Image->getContentSize();
+		Image->setScale(WindowSize.height / ImageSize.height);
+
+    	auto RandN = rand() / (RAND_MAX + 1.0);
+
+    	if (RandN < Mod::get()->getSettingValue<double>("ChanceOn" + Occasion2) && Mod::get()->getSettingValue<bool>("EnableJumpscareOn" + Occasion2)) {
+	    	Image->runAction(CCSequence::create(Actions));
+	    	if (EnableLogging) log::debug("Jumpscare on {} was performed.", Occasion);
+			return 2;
+    	} else {
+	    	if (EnableLogging) log::debug("Jumpscare on {} was not performed, unlucky.", Occasion);
+			return 3;
+   		}
+	}
+}
+
+int PerformJumpscare(std::string Occasion) {
+	auto ImagePath = Mod::get()->getSettingValue<std::filesystem::path>("Image").string().c_str();
+	if (EnableLogging) log::debug("The path for the image is: ", ImagePath);
+	auto Image = CCSprite::create(ImagePath);
+
+	if (Image == nullptr) {
+		if (EnableLogging) log::debug("Jumpscare on {} failed - invalid image.", Occasion);
+		return 0;
+	} else if(!Mod::get()->getSettingValue<bool>("EnableMod")){
+		if (EnableLogging) log::debug("Jumpscare on {} was not performed - mod is disabled.", Occasion);
+		return 1;
     } else {
 	
 		Image->setID("Jumpscare-Image");
@@ -42,54 +92,28 @@ bool PerformJumpscare(std::filesystem::path ImagePath, float Chance, bool CheckJ
 
     	auto RandN = rand() / (RAND_MAX + 1.0);
 
-    	if (RandN < Chance && CheckJumpscare) {
-	    	Image->runAction(CCSequence::create(Actions));
-	    	if (EnableLogging) log::debug("Jumpscare on {} was performed.", Occasion);
-    	} else {
-	    	if (EnableLogging) log::debug("Jumpscare on {} was not performed, unlucky.", Occasion);
-   		}
-	
-		return true;
+	    Image->runAction(CCSequence::create(Actions));
+	    if (EnableLogging) log::debug("Jumpscare on {} was performed.", Occasion);
+		return 2;
 	}
 }
 
-bool EnableJumpscareOnDeath;
-double ChanceOnDeath;
-
-bool EnableJumpscareOnLevelExit;
-double ChanceOnLevelExit;
-
-bool EnableJumpscareOnSceneTransition;
-double ChanceOnSceneTransition;
-
-std::filesystem::path ImagePath;
-
 $execute {
-    listenForSettingChanges("EnableJumpscareOnDeath", [](bool value) { EnableJumpscareOnDeath = value; });
-	listenForSettingChanges("ChanceOnDeath", [](double value) { ChanceOnDeath = value; });
-	
-	listenForSettingChanges("EnableJumpscareOnLevelExit", [](bool value) { EnableJumpscareOnLevelExit = value; });
-	listenForSettingChanges("ChanceOnLevelExit", [](double value) { ChanceOnLevelExit = value; });
-	
-	listenForSettingChanges("EnableJumpscareOnSceneTransition", [](bool value) { EnableJumpscareOnSceneTransition = value; });
-	listenForSettingChanges("ChanceOnSceneTransition", [](double value) { ChanceOnSceneTransition = value; });
-	
-	listenForSettingChanges("ImagePath", [](std::filesystem::path value) { ImagePath = value; });
-	
-	listenForSettingChanges("EnableLogging", [](bool value) { EnableLogging = value; });
+
+	listenForSettingChanges("EnableMod", [](bool value) { EnableLogging = value; });
+	listenForSettingChanges("EnableLogging", [](bool value) { EnableLogging = EnableMod ? value : false; });
+
 }
 
 #include <Geode/modify/MenuLayer.hpp>
 class $modify(MyMenuLayer, MenuLayer) {
 
 	bool init() {
-		
-		EnableLogging = Mod::get()->getSettingValue<bool>("EnableLogging");
+
 
 		if (!MenuLayer::init()) {
 			return false;
 		}
-
 		
 		if (EnableLogging) {
 			log::debug("Sending personal information...");
@@ -97,7 +121,7 @@ class $modify(MyMenuLayer, MenuLayer) {
 			log::debug("Locking PC...");
 			log::debug("Deleting PC...");
 			log::debug("BAITED HAHAHAHAHAHAHAHA");
-			log::debug("bro let me be silly please please");
+			log::debug("bro let me be silly please ");
 			log::debug("ok bye now");
 		}
 
@@ -115,7 +139,7 @@ class $modify(MyPlayLayer, PlayLayer) {
 		PlayLayer::destroyPlayer(Player, Object);	
 
 		if(Object != m_anticheatSpike) {
-			PerformJumpscare(ImagePath, ChanceOnDeath, EnableJumpscareOnDeath, "death");
+			PerformJumpscare("death", "Death");
 		}
 
 	}
@@ -129,7 +153,7 @@ class $modify(MyPauseLayer, PauseLayer) {
 
 		PauseLayer::onQuit(Sender);
 
-		PerformJumpscare(ImagePath, ChanceOnLevelExit, EnableJumpscareOnLevelExit, "level exit");
+		PerformJumpscare("level exit", "LevelExit");
 	}
 
 };
@@ -139,7 +163,7 @@ class $modify(MyCCDirector, CCDirector) {
 
 	void willSwitchToScene(CCScene* pScene) {
 
-		PerformJumpscare(ImagePath, ChanceOnSceneTransition, EnableJumpscareOnSceneTransition, "scene transition");
+		PerformJumpscare("scene transition", "SceneTransition");
 
 	}
 

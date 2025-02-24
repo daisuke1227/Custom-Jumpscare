@@ -73,7 +73,7 @@ protected:
         m_buttonSprite->setColor(shouldEnable ? ccWHITE : ccGRAY);
     }
     void OnTestJumpscare(CCObject*) {
-        if (PerformJumpscare(ImagePath, 1, true, "test jumpscare") == false) FLAlertLayer::create("Fail", "Error getting image.", "OK")->show();
+        if (PerformJumpscare("test jumpscare") == 0) FLAlertLayer::create("Fail", "Error getting image.", "OK")->show();
     }
     void onCommit() override {}
     void onResetToDefault() override {}
