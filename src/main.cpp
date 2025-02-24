@@ -34,7 +34,7 @@ int PerformJumpscare(std::string Occasion, std::string Occasion2) { // it didnt 
 		Image->setPosition( ccp(WindowSize.width/2, WindowSize.height/2) );
 
 		auto Actions = CCArray::create();
-		Actions->addObject(CCFadeTo::create(Mod::get()->getSettingValue<double>("FadeIn"), Mod::get()->getSettingValue<double>("MaxOpacity") * 255));
+		Actions->addObject(CCFadeTo::create(Mod::get()->getSettingValue<double>("FadeIn"), Mod::get()->getSettingValue<double>("FadeIn") * 255));
 		Actions->addObject(CCFadeTo::create(Mod::get()->getSettingValue<double>("FadeOut"), 0));
 		Actions->addObject(CallFuncExt::create([Scene, Image]{
 			Scene->removeChild(Image);
@@ -98,12 +98,7 @@ int PerformJumpscare(std::string Occasion) {
 	}
 }
 
-$execute {
-
-	listenForSettingChanges("EnableMod", [](bool value) { EnableLogging = value; });
-	listenForSettingChanges("EnableLogging", [](bool value) { EnableLogging = EnableMod ? value : false; });
-
-}
+bool HasGameStarted = false;
 
 #include <Geode/modify/MenuLayer.hpp>
 class $modify(MyMenuLayer, MenuLayer) {
@@ -113,6 +108,12 @@ class $modify(MyMenuLayer, MenuLayer) {
 
 		if (!MenuLayer::init()) {
 			return false;
+		}
+
+		if (!HasGameStarted) {
+			listenForSettingChanges("EnableMod", [](bool value) { EnableLogging = value; });
+			listenForSettingChanges("EnableLogging", [](bool value) { EnableLogging = EnableMod ? value : false; });
+			HasGameStarted = true;
 		}
 		
 		if (EnableLogging) {
