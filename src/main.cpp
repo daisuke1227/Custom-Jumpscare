@@ -129,6 +129,8 @@ class $modify(MyCCDirector, CCDirector) {
 
 	void willSwitchToScene(CCScene* pScene) {
 
+		CCDirector::willSwitchToScene(pScene);
+		
 		PerformJumpscare("scene transition", "SceneTransition", false);
 
 	}
