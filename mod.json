@@ -2,8 +2,8 @@
 	"geode": "4.2.0",
 	"gd": {
 		"win": "2.2074",
-		"android": "0.0",
-		"mac": "0.0"
+		"android": "2.2074",
+		"mac": "2.2074"
 	},
 	"id": "johnny_cena.custom_jumpscare",
 	"name": "Custom jumpscare",
