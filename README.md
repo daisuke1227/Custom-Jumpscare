@@ -1,23 +1,18 @@
+<img src="logo.png" width="100" alt="The mod's logo" />
+
 # Custom Jumpscare
-This is where she makes a mod.
 
-<img src="logo.png" width="150" alt="the mod's logo" />
+My first Geode mod purely for jumpscaring you, with customization.
 
+# Features
+- Enable the jumpscare at specific times
+- Set a separate chance for each occasion
+- Choose your very own image to jumpscare you
+- Set fade-in, max opacity and fade-out values for the jumpscare 
 
-## Getting started
-We recommend heading over to [the getting started section on our docs](https://docs.geode-sdk.org/getting-started/) for useful info on what to do next.
+All of the above can be found in the mod's settings. 
 
-## Build instructions
-For more info, see [our docs](https://docs.geode-sdk.org/getting-started/create-mod#build)
-```sh
-# Assuming you have the Geode CLI set up already
-geode build
-```
+# Credits
 
-# Resources
-* [Geode SDK Documentation](https://docs.geode-sdk.org/)
-* [Geode SDK Source Code](https://github.com/geode-sdk/geode/)
-* [Geode CLI](https://github.com/geode-sdk/cli)
-* [Bindings](https://github.com/geode-sdk/bindings/)
-* [Dev Tools](https://github.com/geode-sdk/DevTools)
-.
+- Infinity (@limitedtime_fr on Discord) for the idea
+- Developers in the Geode SDK server for guiding me on creating mods using Geode SDK
