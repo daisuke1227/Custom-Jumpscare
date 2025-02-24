@@ -30,10 +30,18 @@
 			"type": "bool",
 			"default": true
 		},
+		"EnableLogging":{
+			"name": "Enable logging",
+			"description": "Ignore this if you're not a developer",
+			"type": "bool",
+			"default": false,
+			"enable-if": "EnableMod",
+			"enable-if-description": "The mod is disabled"
+		},
 		"Image": {
 			"name": "Jumpscare image",
 			"type": "file",
-			"default": "jumpscare_image.png",
+			"default": "johnny_cena.custom_jumpscare/jumpscare_image.png",
 			"control": {
 				"dialog": "open",
 				"filters": [
@@ -44,11 +52,58 @@
 				]
 			}
 		},
-		"EnableLogging":{
-			"name": "Enable logging",
-			"description": "Ignore this if you're not a developer",
-			"type": "bool",
-			"default": false,
+		"FadeIn": {
+			"name": "Fade-in time",
+			"description": "Fade-in time for the image during jumpscares in seconds",
+			"type": "float",
+			"default": 0.05,
+			"min": 0,
+			"control": {
+				"slider": true,
+				"slider-step": 0.01,
+				"arrows": true,
+				"arrow-step": 0.1,
+				"big-arrows": true,
+				"big-arrow-step": 1,
+				"input": true
+			},
+			"enable-if": "EnableMod",
+			"enable-if-description": "The mod is disabled"
+		},
+		"MaxOpacity": {
+			"name": "Max opacity ",
+			"description": "Max opacity for the image during jumpscares",
+			"type": "float",
+			"default": 1,
+			"min": 0,
+			"max": 1,
+			"control": {
+				"slider": true,
+				"slider-step": 0.01,
+				"arrows": true,
+				"arrow-step": 0.1,
+				"big-arrows": true,
+				"big-arrow-step": 1,
+				"input": true
+			},
+			"enable-if": "EnableMod",
+			"enable-if-description": "The mod is disabled"
+		},
+		"FadeOut": {
+			"name": "Fade-out time for jumpscares",
+			"description": "Fade-out time for the image during jumpscares in seconds",
+			"type": "float",
+			"default": 1,
+			"min": 0,
+			"control": {
+				"slider": true,
+				"slider-step": 0.01,
+				"arrows": true,
+				"arrow-step": 0.1,
+				"big-arrows": true,
+				"big-arrow-step": 1,
+				"input": true
+			},
 			"enable-if": "EnableMod",
 			"enable-if-description": "The mod is disabled"
 		},
