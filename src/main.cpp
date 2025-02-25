@@ -51,7 +51,7 @@ int PerformJumpscare(std::string Occasion, std::string Occasion2, bool IsTest) {
 	    	if (EnableLogging) log::debug("Jumpscare on {} was performed.", Occasion);
 			return 2;
 		} 
-		else if ((RandN < Mod::get()->getSettingValue<double>("ChanceOn" + Occasion2) && Mod::get()->getSettingValue<bool>("EnableJumpscareOn" + Occasion2)) ) {
+		else if ((RandN < Mod::get()->getSettingValue<double>("ChanceOn" + Occasion2) / 100 && Mod::get()->getSettingValue<bool>("EnableJumpscareOn" + Occasion2)) ) {
 	    	Image->runAction(CCSequence::create(Actions));
 	    	if (EnableLogging) log::debug("Jumpscare on {} was performed.", Occasion);
 			return 2;
@@ -130,7 +130,7 @@ class $modify(MyCCDirector, CCDirector) {
 	void willSwitchToScene(CCScene* pScene) {
 
 		CCDirector::willSwitchToScene(pScene);
-		
+
 		PerformJumpscare("scene transition", "SceneTransition", false);
 
 	}
