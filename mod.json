@@ -7,7 +7,7 @@
 	},
 	"id": "johnny_cena.custom_jumpscare",
 	"name": "Custom jumpscare",
-	"version": "v1.0.0",
+	"version": "v0.2.0",
 	"developer": "Johnny Cena",
 	"description": "This mod totally won't jumpscare you.",
 	
@@ -60,11 +60,12 @@
 			"type": "float",
 			"default": 0.05,
 			"min": 0,
+			"max": 0.25,
 			"control": {
 				"slider": true,
-				"slider-step": 0.01,
+				"slider-step": 0.001,
 				"arrows": true,
-				"arrow-step": 0.1,
+				"arrow-step": 0.01,
 				"big-arrows": true,
 				"big-arrow-step": 1,
 				"input": true
@@ -95,8 +96,9 @@
 			"name": "Fade-out time",
 			"description": "Fade-out time for the image during jumpscares",
 			"type": "float",
-			"default": 1,
+			"default": 0.5,
 			"min": 0,
+			"max": 2.5,
 			"control": {
 				"slider": true,
 				"slider-step": 0.01,
