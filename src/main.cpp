@@ -8,9 +8,9 @@ bool EnableLogging;
 
 
 int PerformJumpscare(std::string Occasion, std::string Occasion2, bool IsTest) { // it didnt work without taking another parameter :(
-	auto ImagePath = Mod::get()->getSettingValue<std::filesystem::path>("Image").string().c_str();
-	if (EnableLogging) log::debug("The path for the image is: {}", ImagePath);
-	auto Image = CCSprite::create(ImagePath);
+	auto ImagePath = Mod::get()->getSettingValue<std::filesystem::path>("Image");
+	if (EnableLogging) log::debug("The path for the image is: {}", ImagePath.string().c_str());
+	auto Image = CCSprite::create(ImagePath.string().c_str());
 
 
 	if (EnableLogging) log::debug("\"Occasion\" is: {} \"Occasion2\" is: {}", Occasion, Occasion2);
